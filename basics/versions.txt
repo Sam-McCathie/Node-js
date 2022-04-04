@@ -1,0 +1,7 @@
+Package/ project versioning
+
+4.17.20
+
+"4" - first value -> major change. 
+"17" - second value -> minor change, backward compatable.
+"20" - third value -> bug fixes
