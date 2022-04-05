@@ -4,9 +4,6 @@ import {people, products} from "./data.js";
 const app = express();
 const port = 9000;
 
-// middleware - are functions that execute during the request to the server
-// - has access to req & res
-
 app.get("/", (req, res) => {
   res.send("home");
 });
