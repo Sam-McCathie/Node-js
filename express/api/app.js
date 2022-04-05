@@ -4,6 +4,9 @@ import {people, products} from "./data.js";
 const app = express();
 const port = 9000;
 
+// middleware - are functions that execute during the request to the server
+// - has access to req & res
+
 app.get("/", (req, res) => {
   res.send("home");
 });
@@ -34,6 +37,34 @@ app.get("/api/product/:id", (req, res) => {
   singleProduct
     ? res.json(singleProduct)
     : res.status(404).send("<h1>Product not found</h1>");
+});
+
+// search query example
+app.get("/api/v1/query", (req, res) => {
+  // on front end add after query ? then key->value pairs serparated by & e.g. "?name=Sammy&id=4"
+  console.log(req.query); // access query values
+  const {search, limit} = req.query;
+  let sortedProducts = [...products];
+
+  // query examples:
+  // - ?search=a&limit=3
+  // - ?search=leather
+  // - ?limit=4
+  if (search) {
+    sortedProducts = sortedProducts.filter((p) => {
+      return p.name.startsWith(search);
+    });
+  }
+  if (limit) {
+    sortedProducts = sortedProducts.slice(0, Number(limit));
+  }
+
+  // added handler if status is 200 and array is empty
+  res
+    .status(200)
+    .json(
+      sortedProducts.length > 0 ? sortedProducts : {success: true, data: []}
+    );
 });
 
 app.all("*", (req, res) => {
